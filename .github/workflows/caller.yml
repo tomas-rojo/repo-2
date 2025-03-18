@@ -1,0 +1,23 @@
+name: Trigger Workflow in Repo-1 with Matrix
+
+on:
+  push:  # Allows manual triggering from the GitHub UI
+
+jobs:
+  trigger-workflow:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        sleep_time: [10, 5]  # Two numbers for sleep_duration
+    steps:
+      - name: Trigger Workflow in repo-1
+        uses: the-actions-org/workflow-dispatch@v4
+        with:
+          workflow: Invoke Another Workflow  # Name of the workflow in repo-1
+          repo: ${{ github.repository_owner }}/repo-1  # Target repository (owner/repo-1)
+          ref: main  # Branch where the target workflow resides (adjust if different)
+          inputs: |
+            {
+              "sleep_duration": ${{ matrix.sleep_time }}
+            }
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}  # PAT with repo scope
