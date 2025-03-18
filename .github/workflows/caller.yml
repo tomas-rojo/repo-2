@@ -15,7 +15,7 @@ jobs:
         with:
           workflow: Invoke Another Workflow  # Name of the workflow in repo-1
           repo: ${{ github.repository_owner }}/repo-1  # Target repository (owner/repo-1)
-          token: ${{ secrets.GH_TOKEN }}  # PAT with repo scope
+          token: ${{ secrets.DISPATCH_TOKEN }}  # PAT with repo scope
           ref: main  # Branch where the target workflow resides (adjust if different)
           inputs: |
             {
