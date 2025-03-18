@@ -22,7 +22,15 @@ jobs:
   job2:
     runs-on: ubuntu-latest
     needs: trigger-workflow
+    if: ${{needs.trigger-workflow.outputs.triggered_workflow_status}} == "success"
     steps:
       - name: Checking the status
-        run: |
-          echo ${{needs.trigger-workflow.outputs.triggered_workflow_status}}
+        run: echo ${{needs.trigger-workflow.outputs.triggered_workflow_status}}
+
+  job3:
+    runs-on: ubuntu-latest
+    needs: trigger-workflow
+    if: ${{needs.trigger-workflow.outputs.triggered_workflow_status}} != "success"
+    steps:
+      - name: Checking the status
+        run: echo ${{needs.trigger-workflow.outputs.triggered_workflow_status}}
