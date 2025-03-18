@@ -1,20 +1,28 @@
 name: Trigger Workflow in Repo-1 with Matrix
 
 on:
-  push:  # Allows manual triggering from the GitHub UI
+  push:
 
 jobs:
   trigger-workflow:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        sleep_time: [10, 5]  # Two numbers for sleep_duration
+    outputs:
+      triggered_workflow_status: ${{steps.trigger_workflow.outputs.workflow-conclusion}}
     steps:
       - name: Trigger Workflow in repo-1
         uses: the-actions-org/workflow-dispatch@v4
+        id: trigger_workflow
         with:
           workflow: job-1.yml  # Name of the workflow in repo-1
           repo: ${{ github.repository_owner }}/repo-1  # Target repository (owner/repo-1)
           token: ${{ secrets.DISPATCH_TOKEN }}  # PAT with repo scope
           ref: main  # Branch where the target workflow resides (adjust if different)
-          inputs: '{"sleep_duration": "${{ matrix.sleep_time }}"}'
+          wait-for-completion: true
+          inputs: '{"sleep_duration": "1"}'
+  job2:
+    runs-on: ubuntu-latest
+    needs: trigger-workflow
+    steps:
+      - name: Checking the status
+        run: |
+          echo ${{needs.trigger-workflow.outputs.triggered_workflow_status}}
