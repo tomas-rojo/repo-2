@@ -20,4 +20,4 @@ jobs:
             {
               "sleep_duration": ${{ matrix.sleep_time }}
             }
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}  # PAT with repo scope
+          token: ${{ secrets.GH_TOKEN }}  # PAT with repo scope
