@@ -18,6 +18,7 @@ jobs:
           token: ${{ secrets.DISPATCH_TOKEN }}  # PAT with repo scope
           ref: main  # Branch where the target workflow resides (adjust if different)
           wait-for-completion: true
+          display-workflow-run-url-interval: 20s
           inputs: '{"sleep_duration": "1", "skip_job": "yes"}'
   job2:
     runs-on: ubuntu-latest
